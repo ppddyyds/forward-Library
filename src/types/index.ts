@@ -5,7 +5,7 @@ export interface LoginPayload {
 
 export interface LoginResponse {
   token: string;
-  userName: string;
+  userName?: string;
 }
 
 export interface Book {

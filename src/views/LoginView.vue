@@ -49,6 +49,13 @@ const handleLogin = async () => {
     await authStore.login(form.username, form.password);
     ElMessage.success('登录成功');
     router.push('/books');
+  } catch (error: any) {
+    const status = error.response?.status;
+    if (status === 403) {
+      ElMessage.error('账号或密码错误');
+    } else {
+      ElMessage.error(error.response?.data?.message ?? '登录失败，请稍后重试');
+    }
   } finally {
     loading.value = false;
   }
