@@ -107,3 +107,13 @@ npm run dev
 
 默认端口：`5173`
 
+## 用户画像接口适配
+
+已按后端 `GET /api/user/profile` 文档适配页面展示，包含：
+
+- 阅读偏好标签（`persona.readingTags`）
+- 兴趣分类分布饼图（`persona.topCategories[].score`）
+- 行为分布柱状图（`persona.behaviorDistribution`）
+- 人格类型与描述（`persona.personalityType`、`persona.personalityDescription`）
+- 最近阅读记录（`persona.recentBooks`）
+
