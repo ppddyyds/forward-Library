@@ -1,5 +1,3 @@
-import http from './http';
-import type { LoginPayload, LoginResponse } from '@/types';
+import service from './axios';
 
-export const loginApi = (payload: LoginPayload) =>
-  http.post<LoginResponse>('/auth/login', payload);
+export const getUserProfileApi = () => service.get('/user/profile');

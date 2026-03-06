@@ -1,53 +1,36 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/store/user';
+
+const routes = [
+  { path: '/login', component: () => import('@/views/Login.vue'), meta: { public: true } },
+  { path: '/register', component: () => import('@/views/Register.vue'), meta: { public: true } },
+  {
+    path: '/',
+    component: () => import('@/layout/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('@/views/Home.vue') },
+      { path: 'books', component: () => import('@/views/BookList.vue') },
+      { path: 'book/:id', component: () => import('@/views/BookDetail.vue') },
+      { path: 'recommend', component: () => import('@/views/Recommend.vue') },
+      { path: 'profile', component: () => import('@/views/Profile.vue') },
+      { path: 'ai', component: () => import('@/views/AiChat.vue') }
+    ]
+  }
+];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('@/views/LoginView.vue'),
-      meta: { public: true }
-    },
-    {
-      path: '/',
-      component: () => import('@/views/MainLayout.vue'),
-      children: [
-        {
-          path: '',
-          redirect: '/books'
-        },
-        {
-          path: '/books',
-          name: 'books',
-          component: () => import('@/views/BookListView.vue')
-        },
-        {
-          path: '/recommend',
-          name: 'recommend',
-          component: () => import('@/views/RecommendView.vue')
-        },
-        {
-          path: '/ai',
-          name: 'ai',
-          component: () => import('@/views/AiQaView.vue')
-        }
-      ]
-    }
-  ]
+  routes
 });
 
 router.beforeEach((to) => {
-  const authStore = useAuthStore();
+  const userStore = useUserStore();
   if (to.meta.public) {
     return true;
   }
-
-  if (!authStore.isLoggedIn) {
+  if (!userStore.isLogin) {
     return '/login';
   }
-
   return true;
 });
 

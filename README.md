@@ -1,83 +1,109 @@
-# 智慧图书馆前端系统
+# library-frontend（智慧图书馆前端）
 
-基于 **Vue3 + Vite + TypeScript + Vue Router + Pinia + Axios + Element Plus** 的智慧图书馆前端项目。
+## 项目介绍
 
-后端接口基地址：`http://localhost:8080/api`
+这是一个基于 Vue3 技术栈的智慧图书馆前端系统，支持 JWT 登录鉴权、图书搜索与详情借阅、个性化推荐、AI 问答、用户画像统计等功能。
 
-## 功能清单
+后端接口地址：`http://localhost:8080/api`
 
-- JWT 登录认证（登录页）
-- 图书列表展示与关键字搜索
-- 热门推荐页面
-- AI 问答页面
-- Axios 二次封装（自动携带 Token）
-- 路由鉴权（未登录自动跳转登录页）
+## 技术栈
+
+- Vue3
+- Vite
+- TypeScript
+- Vue Router
+- Pinia
+- Axios
+- Element Plus
+- ECharts
+
+## 功能模块
+
+### Phase1
+- 登录页（JWT）
+- 图书列表与搜索
+- 热门/推荐页面
+- AI问答
+- Axios封装（自动携带 token）
+- 路由鉴权
+
+### Phase2
+- 图书详情页 `/book/:id`
+  - 获取详情：`GET /books/{id}`
+  - 借阅图书：`POST /books/{id}/borrow`
+- 个性化推荐页 `/recommend`
+  - 接口：`GET /recommendation/personal`
+- 用户画像页 `/profile`
+  - 接口：`GET /user/profile`
+  - 使用 ECharts 展示兴趣分类饼图
+- AI问答升级 `/ai`
+  - 类 ChatGPT 消息界面
+  - 支持消息列表、用户消息、AI消息、滚动到底部
+- 搜索日志支持
+  - 搜索接口：`GET /books/search?keyword=`
+
+## 路由
+
+- `/login`
+- `/register`
+- `/`
+- `/books`
+- `/book/:id`
+- `/recommend`
+- `/profile`
+- `/ai`
 
 ## 项目结构
 
 ```text
-forward-Library/
+library-frontend/
 ├── index.html
 ├── package.json
-├── tsconfig.json
-├── tsconfig.app.json
-├── tsconfig.node.json
 ├── vite.config.ts
-├── src/
-│   ├── App.vue
-│   ├── main.ts
-│   ├── assets/
-│   │   └── main.css
-│   ├── api/
-│   │   ├── http.ts
-│   │   ├── library.ts
-│   │   └── user.ts
-│   ├── router/
-│   │   └── index.ts
-│   ├── stores/
-│   │   └── auth.ts
-│   ├── types/
-│   │   └── index.ts
-│   └── views/
-│       ├── AiQaView.vue
-│       ├── BookListView.vue
-│       ├── LoginView.vue
-│       ├── MainLayout.vue
-│       └── RecommendView.vue
-└── README.md
+├── tsconfig.json
+└── src
+    ├── main.ts
+    ├── App.vue
+    ├── router
+    │   └── index.ts
+    ├── store
+    │   └── user.ts
+    ├── api
+    │   ├── axios.ts
+    │   ├── auth.ts
+    │   ├── book.ts
+    │   ├── recommend.ts
+    │   ├── ai.ts
+    │   └── user.ts
+    ├── layout
+    │   └── MainLayout.vue
+    ├── components
+    │   ├── BookCard.vue
+    │   ├── BookList.vue
+    │   ├── SearchBar.vue
+    │   └── ChatBox.vue
+    └── views
+        ├── Login.vue
+        ├── Register.vue
+        ├── Home.vue
+        ├── BookList.vue
+        ├── BookDetail.vue
+        ├── Recommend.vue
+        ├── Profile.vue
+        └── AiChat.vue
 ```
 
-## 启动说明
-
-### 1) 安装依赖
+## 安装
 
 ```bash
 npm install
 ```
 
-### 2) 启动开发环境
+## 运行
 
 ```bash
 npm run dev
 ```
 
-默认访问地址（Vite）：
+默认端口：`5173`
 
-- `http://localhost:5173`
-
-> 请确保后端服务已启动，并可通过 `http://localhost:8080/api` 正常访问。
-
-## 接口约定（示例）
-
-前端默认调用下列接口（可按后端实际情况适配）：
-
-- `POST /auth/login`：登录，返回 `{ token, userName }`
-- `GET /books?keyword=xxx`：图书列表/搜索
-- `GET /books/recommendations/hot`：热门推荐
-- `POST /ai/ask`：AI问答，返回 `{ answer }`
-
-## 说明
-
-- Token 存储在 `localStorage`。
-- Axios 请求拦截器自动在请求头追加：`Authorization: Bearer <token>`。
-- Axios 响应拦截器在 `401` 时自动清理登录信息并跳转 `/login`。
